@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Saloons - ReBook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #FFFFFF;
+            --secondary-bg: #F0F0F0;
+            --primary-text: #1A1A1A;
+            --secondary-text: #666666;
+            --accent-color: #000000;
+            --border-color: #D3D3D3;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        nav {
+            display: none;
+        }
+        
+        @media (min-width: 769px) {
+            nav {
+                display: flex;
+                gap: 20px;
+            }
+        }
+
+        nav a {
+            color: var(--primary-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-text);
+        }
+
+        nav a.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            z-index: 100;
+            width: 25px;
+            height: 25px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-text);
+            margin: 3px 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .menu-toggle.open .bar:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .menu-toggle.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open .bar:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .search-section {
+            padding: 60px 0 20px;
+            text-align: center;
+        }
+        
+        .search-section h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .search-section p {
+            color: var(--secondary-text);
+            margin-bottom: 30px;
+        }
+
+        .search-bar-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            background-color: var(--secondary-bg);
+            color: var(--primary-text);
+            box-sizing: border-box;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .salon-listing-section {
+            padding: 40px 0 60px;
+        }
+
+        .salon-listing-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-align: center;
+        }
+
+        .salon-card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .salon-list-card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .salon-list-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .salon-list-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+        }
+
+        .salon-list-card .popular-tag {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+            font-weight: 600;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .salon-list-card p {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .salon-list-card p i {
+            color: var(--accent-color);
+        }
+
+        .salon-list-card .tags {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .salon-list-card .tags span {
+            background-color: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 50px;
+        }
+
+        footer {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+            text-decoration: none;
+        }
+
+        .footer-social a {
+            color: var(--primary-bg);
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: var(--secondary-text);
+            transform: scale(1.2);
+        }
+
+        .footer-contact {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .footer-contact h2 {
+            margin-bottom: 5px;
+        }
+
+        .footer-copyright {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+
+        /* Mobile Nav */
+        @media (max-width: 768px) {
+            nav {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 70%;
+                max-width: 300px;
+                height: 100%;
+                background-color: var(--secondary-bg);
+                padding: 20px;
+                border-left: 1px solid var(--border-color);
+                box-shadow: -4px 0 8px rgba(0,0,0,0.1);
+                transform: translateX(100%);
+                z-index: 99;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            nav.open {
+                transform: translateX(0);
+            }
+
+            header {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo {
+                order: 1;
+            }
+
+            .menu-toggle {
+                order: 2;
+            }
+
+            nav a {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid var(--border-color);
+                width: 100%;
+            }
+        }
+
+        /* Checkpoint Bar */
+        .checkpoint-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .checkpoint-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkpoint-item .icon {
+            font-size: 1.5rem;
+            color: var(--secondary-text);
+            background-color: var(--secondary-bg);
+            border-radius: 50%;
+            padding: 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .checkpoint-item p {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--secondary-text);
+            margin: 0;
+        }
+
+        .checkpoint-item.active .icon, .checkpoint-item.active p {
+            color: var(--accent-color);
+        }
+        
+        .checkpoint-item.active .icon {
+            background-color: var(--primary-bg);
+        }
+
+        .checkpoint-bar .progress-line {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            width: 90%;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: -1;
+        }
+
+        .checkpoint-bar .progress-line-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeInScaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animated-main {
+            animation: fadeInScaleUp 0.8s ease-out forwards;
+        }
+
+        /* Service Cards */
+        .service-card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .service-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .service-card .details h3 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .service-card .details p {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            margin: 5px 0;
+        }
+
+        .service-card .details .tags span {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 50px;
+            background-color: var(--primary-bg);
+            border: 1px solid var(--border-color);
+        }
+        
+        .service-card .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* Stylist Cards */
+        .stylist-card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .stylist-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+
+        .stylist-card .profile-pic {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-bg);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: var(--secondary-text);
+        }
+
+        .stylist-card .details h3 {
+            font-size: 1.2rem;
+            margin: 0 0 5px;
+        }
+        
+        .stylist-card .details p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+
+        .stylist-card .details p i {
+            color: var(--accent-color);
+            margin-right: 5px;
+        }
+
+        /* Time Picker */
+        .time-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .time-slot {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .time-slot:hover {
+            background-color: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* Buttons */
+        .cta-button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-bg);
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #333;
+            transform: translateY(-3px);
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+
+<header class="container">
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+    <a href="index.html" class="logo">ReBook</a>
+    <nav id="mobile-nav">
+        <a href="index.html">Home</a>
+        <a href="#footer">Customer Care</a>
+    </nav>
+</header>
+
+<main class="animated-main">
+    <section class="search-section container">
+        <h1>BOOK YOUR SEATS</h1>
+        <p>Simple, elegant salon booking. Choose your salon, service, stylist, and time.</p>
+        <div class="search-bar-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for saloons...">
+        </div>
+    </section>
+
+    <div class="container checkpoint-bar">
+        <div class="checkpoint-item active" data-step="1">
+            <i class="fas fa-map-marker-alt icon"></i>
+            <p>Choose Salon</p>
+        </div>
+        <div class="checkpoint-item" data-step="2">
+            <i class="fas fa-cut icon"></i>
+            <p>Choose Service</p>
+        </div>
+        <div class="checkpoint-item" data-step="3">
+            <i class="fas fa-user icon"></i>
+            <p>Select Stylist</p>
+        </div>
+        <div class="checkpoint-item" data-step="4">
+            <i class="far fa-clock icon"></i>
+            <p>Pick Time</p>
+        </div>
+        <div class="checkpoint-item" data-step="5">
+            <i class="far fa-calendar-check icon"></i>
+            <p>Confirm</p>
+        </div>
+        <div class="progress-line">
+            <div id="progress-fill" class="progress-line-fill"></div>
+        </div>
+    </div>
+
+    <section class="salon-listing-section container">
+        <div id="step-1" class="booking-step">
+            <h2>Choose Your Salon</h2>
+            <div class="salon-card-list">
+                <div class="salon-list-card" data-salon-name="Downtown Studio">
+                    <h3>Downtown Studio</h3>
+                    <span class="popular-tag">Popular</span>
+                    <p><i class="fas fa-map-marker-alt"></i>123 Main Street, Downtown</p>
+                    <p>
+                        <i class="fas fa-star"></i> 4.9 (245)
+                        <i class="fas fa-map-pin"></i> 0.5 km
+                    </p>
+                    <p><i class="far fa-clock"></i> 9:00 AM - 8:00 PM</p>
+                    <div class="tags">
+                        <span>Hair</span>
+                        <span>Nails</span>
+                        <span>Beauty</span>
+                    </div>
+                </div>
+
+                <div class="salon-list-card" data-salon-name="Uptown Elegance">
+                    <h3>Uptown Elegance</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>456 Oak Avenue, Uptown</p>
+                    <p>
+                        <i class="fas fa-star"></i> 4.8 (189)
+                        <i class="fas fa-map-pin"></i> 1.2 km
+                    </p>
+                    <p><i class="far fa-clock"></i> 10:00 AM - 9:00 PM</p>
+                    <div class="tags">
+                        <span>Hair</span>
+                        <span>Beauty</span>
+                        <span>Special</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-2" class="booking-step" style="display:none;">
+            <button class="back-button" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2>Choose Your Service</h2>
+            <div class="service-card" data-service-name="Classic Haircut" data-service-cost="45">
+                <div class="details">
+                    <h3>Classic Haircut</h3>
+                    <p>Professional cut and styling</p>
+                    <div class="tags"><span>Hair</span></div>
+                </div>
+                <span class="price">$45</span>
+            </div>
+            <div class="service-card" data-service-name="Bridal Makeup" data-service-cost="250">
+                <div class="details">
+                    <h3>Bridal Makeup</h3>
+                    <p>Full face bridal makeup and styling</p>
+                    <div class="tags"><span>Beauty</span></div>
+                </div>
+                <span class="price">$250</span>
+            </div>
+        </div>
+
+        <div id="step-3" class="booking-step" style="display:none;">
+            <button class="back-button" onclick="goToStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2>Select Stylist</h2>
+            <div class="stylist-card" data-stylist-name="Sarah Johnson">
+                <div class="profile-pic">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="details">
+                    <h3>Sarah Johnson</h3>
+                    <p>Hair Stylist & Colorist</p>
+                    <p>
+                        <i class="fas fa-star"></i> 4.9 (127)
+                        <i class="fas fa-award"></i> 8+ years
+                    </p>
+                </div>
+            </div>
+            <div class="stylist-card" data-stylist-name="Maria Rodriguez">
+                <div class="profile-pic">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="details">
+                    <h3>Maria Rodriguez</h3>
+                    <p>Expert in Nails & Spa</p>
+                    <p>
+                        <i class="fas fa-star"></i> 4.7 (95)
+                        <i class="fas fa-award"></i> 6+ years
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-4" class="booking-step" style="display:none;">
+            <button class="back-button" onclick="goToStep(3)"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2>Pick Date & Time</h2>
+            <div class="time-picker">
+                <div class="time-slot" data-time="9:00 AM">9:00 AM</div>
+                <div class="time-slot" data-time="10:00 AM">10:00 AM</div>
+                <div class="time-slot" data-time="11:00 AM">11:00 AM</div>
+                <div class="time-slot" data-time="1:00 PM">1:00 PM</div>
+                <div class="time-slot" data-time="2:00 PM">2:00 PM</div>
+                <div class="time-slot" data-time="3:00 PM">3:00 PM</div>
+            </div>
+        </div>
+        
+        <div id="step-5" class="booking-step" style="display:none;">
+            <button class="back-button" onclick="goToStep(4)"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2>Confirm Booking</h2>
+            <p>Your booking details:</p>
+            <ul id="summary-list">
+                </ul>
+            <button class="cta-button" style="margin-top: 20px;">Confirm & Pay</button>
+        </div>
+    </section>
+</main>
+
+<footer id="footer">
+    <div class="container footer-content">
+        <div class="footer-social">
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="footer-contact">
+            <h2>Customer Care</h2>
+            <span>8593850911</span>
+            <span>Gmail: your.email@example.com</span>
+        </div>
+        <p class="footer-copyright">&copy; 2025 ReBook. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const nav = document.getElementById('mobile-nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        nav.classList.toggle('open');
+        menuToggle.classList.toggle('open');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            }
+        });
+    });
+
+    // Booking Logic
+    let currentStep = 1;
+    let bookingDetails = {};
+    const totalSteps = 5;
+
+    function updateProgressBar(step) {
+        const progressFill = document.getElementById('progress-fill');
+        const percentage = ((step - 1) / (totalSteps - 1)) * 100;
+        progressFill.style.width = percentage + '%';
+    }
+
+    function showStep(step) {
+        document.querySelectorAll('.booking-step').forEach(s => s.style.display = 'none');
+        document.getElementById(`step-${step}`).style.display = 'block';
+        
+        document.querySelectorAll('.checkpoint-item').forEach(item => item.classList.remove('active'));
+        document.querySelector(`.checkpoint-item[data-step="${step}"]`).classList.add('active');
+
+        currentStep = step;
+        updateProgressBar(step);
+
+        const searchSection = document.querySelector('.search-section');
+        searchSection.style.display = (step === 1) ? 'block' : 'none';
+        
+        window.scrollTo({
+            top: document.querySelector('.salon-listing-section').offsetTop,
+            behavior: 'smooth'
+        });
+    }
+
+    function goToStep(step) {
+        showStep(step);
+    }
+
+    document.querySelectorAll('.salon-list-card').forEach(card => {
+        card.addEventListener('click', function() {
+            bookingDetails.salon = this.getAttribute('data-salon-name');
+            showStep(2);
+        });
+    });
+
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', function() {
+            bookingDetails.service = this.getAttribute('data-service-name');
+            bookingDetails.cost = this.getAttribute('data-service-cost');
+            showStep(3);
+        });
+    });
+
+    document.querySelectorAll('.stylist-card').forEach(card => {
+        card.addEventListener('click', function() {
+            bookingDetails.stylist = this.getAttribute('data-stylist-name');
+            showStep(4);
+        });
+    });
+
+    document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.addEventListener('click', function() {
+            bookingDetails.time = this.getAttribute('data-time');
+            updateSummary();
+            showStep(5);
+        });
+    });
+
+    function updateSummary() {
+        const summaryList = document.getElementById('summary-list');
+        summaryList.innerHTML = `
+            <li><strong>Salon:</strong> ${bookingDetails.salon}</li>
+            <li><strong>Service:</strong> ${bookingDetails.service} ($${bookingDetails.cost})</li>
+            <li><strong>Stylist:</strong> ${bookingDetails.stylist}</li>
+            <li><strong>Time:</strong> ${bookingDetails.time}</li>
+        `;
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    const salonCards = document.querySelectorAll('.salon-list-card');
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        salonCards.forEach(card => {
+            const salonName = card.querySelector('h3').textContent.toLowerCase();
+            if (salonName.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReBook - Your One Step Away Booking Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #FFFFFF;
+            --secondary-bg: #F0F0F0;
+            --primary-text: #1A1A1A;
+            --secondary-text: #666666;
+            --accent-color: #000000;
+            --border-color: #D3D3D3;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-bg);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        nav a {
+            color: var(--primary-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-text);
+        }
+
+        nav a.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+            width: 25px;
+            height: 25px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-text);
+            margin: 3px 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .menu-toggle.open .bar:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .menu-toggle.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open .bar:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0; /* Adjusted padding */
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 25px;
+            color: var(--secondary-text);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: var(--secondary-text);
+        }
+
+        .about-section {
+            padding: 40px 0; /* Adjusted padding */
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--primary-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .about-content p {
+            text-align: left;
+            margin-bottom: 20px;
+            color: var(--secondary-text);
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 30px 0; /* Adjusted padding */
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-contact h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .footer-contact h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background-color: #fff;
+            margin: 5px auto 0;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #ccc;
+        }
+
+        .footer-contact {
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .footer-contact strong {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .footer-contact span {
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .footer-copyright {
+            margin-top: 15px;
+            font-size: 0.8rem;
+        }
+
+        /* Animation */
+        @keyframes fadeInScaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animated-section {
+            animation: fadeInScaleUp 1s ease-out forwards;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 70%;
+                max-width: 300px;
+                height: 100%;
+                background-color: var(--secondary-bg);
+                padding: 20px;
+                border-left: 1px solid var(--border-color);
+                box-shadow: -4px 0 8px rgba(0,0,0,0.1);
+                transform: translateX(100%);
+                z-index: 99;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            nav.open {
+                transform: translateX(0);
+            }
+
+            nav a {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            header {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="container">
+    <a href="index.html" class="logo">ReBook</a>
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+    <nav id="mobile-nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="#about-us">About Us</a>
+        <a href="#footer">Customer Care</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero animated-section">
+        <div class="container">
+            <h1>Your One Step Away Booking Platform</h1>
+            <p>Book salons, sports, shows, restaurants, rooms, and more with ease.</p>
+            <a href="booking.html" class="cta-button">Start Booking</a>
+        </div>
+    </section>
+
+    <section id="about-us" class="about-section animated-section">
+        <div class="container about-content">
+            <h2>About ReBook</h2>
+            <p>ReBook is your premier one-stop platform designed to simplify the way you book experiences and services. Born from the idea that finding and reserving everything from a relaxing salon visit to an exciting sporting event should be effortless, ReBook brings together a diverse range of options in one convenient place. We partner with local businesses and service providers to offer you a comprehensive selection of choices, ensuring quality and convenience at your fingertips.</p>
+            <p>Our mission is to empower you to discover and book the things you need and love, saving you time and hassle. Whether you're looking to reserve a table at a popular restaurant, book tickets for the latest shows, find accommodation for your next trip, or even schedule a fitness session, ReBook has you covered. We are committed to providing a user-friendly interface, secure booking processes, and excellent customer support to make your experience seamless and enjoyable.</p>
+            <p>Thank you for choosing ReBook as your go-to booking platform. We are constantly working to expand our offerings and improve our services to meet your needs. Explore, book, and enjoy with ReBook!</p>
+        </div>
+    </section>
+</main>
+
+<footer id="footer">
+    <div class="container footer-content">
+        <div class="footer-social">
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="footer-contact">
+            <h2>Customer Care</h2>
+            <span>8593850911</span>
+            <span>Gmail: your.email@example.com</span>
+        </div>
+        <p class="footer-copyright">&copy; 2025 ReBook. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const nav = document.getElementById('mobile-nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        nav.classList.toggle('open');
+        menuToggle.classList.toggle('open');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

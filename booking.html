@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - ReBook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #FFFFFF;
+            --secondary-bg: #F0F0F0;
+            --primary-text: #1A1A1A;
+            --secondary-text: #666666;
+            --accent-color: #000000;
+            --border-color: #D3D3D3;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        nav a {
+            color: var(--primary-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-text);
+        }
+
+        nav a.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+            width: 25px;
+            height: 25px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-text);
+            margin: 3px 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .menu-toggle.open .bar:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .menu-toggle.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.open .bar:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+        
+        main {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        main h1 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        main p {
+            color: var(--secondary-text);
+            font-size: 1rem;
+        }
+        
+        .categories-section {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .categories-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-text);
+        }
+
+        .card-description {
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .browse-button {
+            display: inline-block;
+            width: 80%;
+            padding: 8px;
+            background-color: var(--primary-bg);
+            color: var(--accent-color);
+            text-decoration: none;
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .browse-button:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer-contact h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .footer-contact h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background-color: #fff;
+            margin: 5px auto 0;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #ccc;
+        }
+
+        .footer-contact {
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .footer-contact strong {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .footer-contact span {
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .footer-copyright {
+            margin-top: 15px;
+            font-size: 0.8rem;
+        }
+
+        /* Animation */
+        @keyframes fadeInScaleDown {
+            from {
+                opacity: 0;
+                transform: scale(1.05);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animated-main {
+            animation: fadeInScaleDown 0.8s ease-out forwards;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 70%;
+                max-width: 300px;
+                height: 100%;
+                background-color: var(--secondary-bg);
+                padding: 20px;
+                border-left: 1px solid var(--border-color);
+                box-shadow: -4px 0 8px rgba(0,0,0,0.1);
+                transform: translateX(100%);
+                z-index: 99;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            nav.open {
+                transform: translateX(0);
+            }
+
+            nav a {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            header {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="container">
+    <a href="index.html" class="logo">ReBook</a>
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+    <nav id="mobile-nav">
+        <a href="index.html">Home</a>
+        <a href="#footer">Customer Care</a>
+    </nav>
+</header>
+
+<main class="container animated-main">
+    <section class="categories-section">
+        <h2>Explore Our Categories</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <i class="fas fa-cut card-icon"></i>
+                <h3 class="card-title">Salons</h3>
+                <p class="card-description">Beauty & Haircuts</p>
+                <a href="salon.html" class="browse-button">Browse Salons</a>
+            </div>
+
+            <div class="category-card">
+                <i class="fas fa-utensils card-icon"></i>
+                <h3 class="card-title">Restaurants</h3>
+                <p class="card-description">Dining Experiences</p>
+                <a href="#" class="browse-button">Browse Restaurants</a>
+            </div>
+
+            <div class="category-card">
+                <i class="fas fa-film card-icon"></i>
+                <h3 class="card-title">Shows</h3>
+                <p class="card-description">Concerts & Movies</p>
+                <a href="#" class="browse-button">Browse Shows</a>
+            </div>
+
+            <div class="category-card">
+                <i class="fas fa-bed card-icon"></i>
+                <h3 class="card-title">Rooms</h3>
+                <p class="card-description">Accommodation</p>
+                <a href="#" class="browse-button">Browse Rooms</a>
+            </div>
+
+            <div class="category-card">
+                <i class="fas fa-futbol card-icon"></i>
+                <h3 class="card-title">Sports</h3>
+                <p class="card-description">Turfs, pools, gyms, etc.</p>
+                <a href="#" class="browse-button">Browse Sports</a>
+            </div>
+
+            <div class="category-card">
+                <i class="fas fa-glass-cheers card-icon"></i>
+                <h3 class="card-title">Party & Club</h3>
+                <p class="card-description">Venues & Reservations</p>
+                <a href="#" class="browse-button">Browse Party & Club</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer id="footer">
+    <div class="container footer-content">
+        <div class="footer-social">
+            <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://x.com/" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.youtube.com/" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="footer-contact">
+            <h2>Customer Care</h2>
+            <span>8593850911</span>
+            <span>Gmail: your.email@example.com</span>
+        </div>
+        <p class="footer-copyright">&copy; 2025 ReBook. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const nav = document.getElementById('mobile-nav');
+        const menuToggle = document.querySelector('.menu-toggle');
+        nav.classList.toggle('open');
+        menuToggle.classList.toggle('open');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
